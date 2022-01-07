@@ -1,0 +1,57 @@
+{% load static i18n %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Blocks{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Time block tracker">
+    <meta name="author" content="Ian Ross">
+
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+
+    {% block css %}
+    <!-- Your stuff: Third-party CSS libraries go here -->
+    <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    {% endblock %}
+
+    {% block javascript %}
+      <script defer src="{% static 'js/vendors.js' %}"></script>
+      <script defer src="{% static 'js/project.js' %}"></script>
+    {% endblock javascript %}
+  </head>
+
+  <body>
+
+    <H1>BLOCKS</H1>
+
+    <H2>NAV LINKS</H2>
+
+    <UL>
+      <LI><A href="{% url 'blocks:home' %}">Home</A></LI>
+      <LI><A href="{% url 'blocks:project_list' %}">Projects</A></LI>
+      <LI><A href="{% url 'blocks:settings' %}">Settings</A></LI>
+    </UL>
+    
+    <div class="container">
+
+      <H2>CONTENT</H2>
+      
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% block content %}
+        <p>Use this document as a way to quick start any new project.</p>
+      {% endblock content %}
+
+    </div> <!-- /container -->
+
+  </body>
+</html>
