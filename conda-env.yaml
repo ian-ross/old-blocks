@@ -33,6 +33,9 @@ dependencies:
   - xz=5.2.5=h7b6447c_0
   - zlib=1.2.11=h7f8727e_4
   - pip:
+    - beautifulsoup4==4.10.0
+    - django-bootstrap5==21.3
     - django-debug-toolbar==3.2.4
     - django-environ==0.8.1
+    - soupsieve==2.3.1
 prefix: /home/iross/.conda/envs/blocks

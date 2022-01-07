@@ -1,4 +1,4 @@
-{% load static i18n %}<!DOCTYPE html>
+{% load static i18n django_bootstrap5 %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
@@ -13,10 +13,12 @@
 
     {% block css %}
     <!-- Your stuff: Third-party CSS libraries go here -->
+    {% bootstrap_css %}
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
     {% endblock %}
 
     {% block javascript %}
+      {% bootstrap_javascript %}
       <script defer src="{% static 'js/vendors.js' %}"></script>
       <script defer src="{% static 'js/project.js' %}"></script>
     {% endblock javascript %}
@@ -24,34 +26,39 @@
 
   <body>
 
-    <H1>BLOCKS</H1>
+    <nav class="navbar navbar-expand-md navbar-light fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">BLOCKS</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+                aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/projects">Projects</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/settings">Settings</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-    <H2>NAV LINKS</H2>
+    {% bootstrap_messages %}
 
-    <UL>
-      <LI><A href="{% url 'blocks:home' %}">Home</A></LI>
-      <LI><A href="{% url 'blocks:project_list' %}">Projects</A></LI>
-      <LI><A href="{% url 'blocks:settings' %}">Settings</A></LI>
-    </UL>
-    
-    <div class="container">
-
-      <H2>CONTENT</H2>
-      
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endfor %}
-      {% endif %}
+    <main class="container">
 
       {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
+      <div class="bg-light p-5 rounded">
+        <h1>Content</h1>
+        <p class="lead">Content goes here.</p>
+      </div>
       {% endblock content %}
 
-    </div> <!-- /container -->
+    </main>
 
   </body>
 </html>
