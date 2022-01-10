@@ -4,7 +4,6 @@ import environ
 
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
-APPS_DIR = ROOT_DIR / 'apps'
 env = environ.Env()
 
 READ_DOT_ENV_FILE = env.bool('DJANGO_READ_DOT_ENV_FILE', default=False)
@@ -52,9 +51,12 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_bootstrap5',
+    'magiclink',
 ]
 
 LOCAL_APPS = [
+    'core',
+    'blocks',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -77,7 +79,7 @@ MIDDLEWARE = [
 
 STATIC_ROOT = str(ROOT_DIR / 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [str(APPS_DIR / 'static')]
+STATICFILES_DIRS = [ROOT_DIR / 'static']
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -89,7 +91,7 @@ STATICFILES_FINDERS = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [str(APPS_DIR / 'templates')],
+        'DIRS': [ROOT_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,7 +108,7 @@ TEMPLATES = [
     },
 ]
 
-FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+# FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 
 # SECURITY
@@ -115,6 +117,32 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
+
+
+# EMAIL
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_TIMEOUT = 5
+
+
+# AUTHENTICATION
+
+AUTHENTICATION_BACKENDS = [
+    'magiclink.backends.MagicLinkBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_URL = 'magiclink:login'
+LOGOUT_REDIRECT_URL = 'magiclink:login'
+
+MAGICLINK_LOGIN_TEMPLATE_NAME = 'blocks/login.html'
+MAGICLINK_LOGIN_SENT_TEMPLATE_NAME = 'blocks/login_sent.html'
+MAGICLINK_LOGIN_FAILED_TEMPLATE_NAME = 'blocks/login_failed.html'
+
+MAGICLINK_REQUIRE_SIGNUP = False
+
+MAGICLINK_EMAIL_TEMPLATE_NAME_TEXT = 'blocks/login_email.txt'
+MAGICLINK_EMAIL_TEMPLATE_NAME_HTML = 'blocks/login_email.html'
 
 
 # --------------------  MORE HERE?  --------------------

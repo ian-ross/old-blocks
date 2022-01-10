@@ -22,6 +22,11 @@ CACHES = {
 }
 
 
+# EMAIL
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
 # DEBUG TOOLBAR
 
 INSTALLED_APPS += ["debug_toolbar"]  # noqa F405

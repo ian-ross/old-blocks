@@ -49,4 +49,4 @@ those. (Also covered in the Django Cookiecutter template, I think.)
 
 ## CSS styling
 
-Use Bootstrap, probably with `django_bootstrap5`.
+Use Bootstrap with `django_bootstrap5`.
