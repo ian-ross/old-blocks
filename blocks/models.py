@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from core.models import TimeStampedModel
@@ -10,22 +11,38 @@ from core.models import TimeStampedModel
 #   * bonus >= 0
 #   * rows > 0
 
+# Reorder projects by doing:
+#
+#  1. Get project order from user.get_project_order()
+#
+#  2. Reorder by doing user.set_project_order([<order1>, <order2>, <order3>, ...])
+
 class Project(TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     baseline = models.PositiveIntegerField()
-    bonus = models.PositiveIntegerField()
-    rows = models.PositiveIntegerField()
+    bonus = models.PositiveIntegerField(default=0)
+    rows = models.PositiveIntegerField(default=1)
+    active = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = ('user', 'name')
+        order_with_respect_to = 'user'
+        constraints = [
+            models.UniqueConstraint(fields=('user', 'name'), name='unique_name'),
+        ]
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('blocks:project_update', kwargs={'pk': self.pk})
 
     
 class Block(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     start = models.DateTimeField()
     duration = models.DurationField()
-    
+
 
 # TODO: NEED A CUSTOM MANAGER HERE TO DO TYPE CONVERSION
 

@@ -4,6 +4,52 @@
 
 {% block content %}
 
-<p>Project list</p>
+<div class="container mt-4">
+  <div class="mb-3">
+    <a href="/projects/add" class="btn btn-primary">Add project</A>
+  </div>
+  <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Baseline</th>
+          <th scope="col">Bonus</th>
+          <th scope="col">Rows</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for project in project_list %}
+        <tr {% if not project.active %}class="text-muted fw-light fst-italic"{% endif %}>
+          <td><a href="{% url 'blocks:project_update' project.pk %}">{{ project.name }}</a></td>
+          <td>{{ project.baseline }}</td>
+          <td>{{ project.bonus }}</td>
+          <td>{{ project.rows }}</td>
+          <td>
+            <form class="table-form" action="{% url 'blocks:project_delete' project.pk %}" method="post"
+                  onsubmit="return confirm('Are you sure you want to delete project &ldquo;{{ project.name }}&rdquo;? THIS WILL DELETE ALL BLOCK DATA ASSOCIATED WITH THE PROJECT!')">
+              {% csrf_token %}
+              <button class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
 {% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+

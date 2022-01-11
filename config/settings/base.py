@@ -50,6 +50,8 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'crispy_forms',
+    'crispy_bootstrap5',
     'django_bootstrap5',
     'magiclink',
 ]
@@ -110,6 +112,10 @@ TEMPLATES = [
 
 # FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
 
 # SECURITY
 
@@ -134,6 +140,7 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_URL = 'magiclink:login'
 LOGOUT_REDIRECT_URL = 'magiclink:login'
+LOGIN_REDIRECT_URL = 'blocks:home'
 
 MAGICLINK_LOGIN_TEMPLATE_NAME = 'blocks/login.html'
 MAGICLINK_LOGIN_SENT_TEMPLATE_NAME = 'blocks/login_sent.html'

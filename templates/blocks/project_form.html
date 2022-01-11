@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Blocks | {{ project.name }}{% endblock title %}
+
+{% block content %}
+
+{% crispy form %}
+
+{% endblock content %}
