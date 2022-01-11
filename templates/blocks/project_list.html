@@ -12,6 +12,7 @@
     <table class="table">
       <thead>
         <tr>
+          <th></th>
           <th scope="col">Name</th>
           <th scope="col">Baseline</th>
           <th scope="col">Bonus</th>
@@ -22,6 +23,16 @@
       <tbody>
         {% for project in project_list %}
         <tr {% if not project.active %}class="text-muted fw-light fst-italic"{% endif %}>
+          <td class="reorder-arrows">
+            <form action="{% url 'blocks:project_reorder' project.pk 'up' %}" method="post">
+              {% csrf_token %}
+              <button class="btn btn-sm"><i class="bi-caret-up-fill"></i></button>
+            </form>&nbsp;
+            <form action="{% url 'blocks:project_reorder' project.pk 'down' %}" method="post">
+              {% csrf_token %}
+              <button class="btn btn-sm"><i class="bi-caret-down-fill"></i></button>
+            </form>
+          </td>
           <td><a href="{% url 'blocks:project_update' project.pk %}">{{ project.name }}</a></td>
           <td>{{ project.baseline }}</td>
           <td>{{ project.bonus }}</td>

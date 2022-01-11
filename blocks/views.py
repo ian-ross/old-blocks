@@ -1,5 +1,6 @@
+from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic import View, DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -41,6 +42,12 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     model = Project
     success_url = reverse_lazy('blocks:project_list')
 
+
+class ProjectReorderView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        Project.objects.reorder(kwargs['pk'], kwargs['dir'])
+        return HttpResponseRedirect(reverse('blocks:project_list'))
+        
     
 class SettingsView(LoginRequiredMixin, TemplateView):
     template_name = 'blocks/settings.html'

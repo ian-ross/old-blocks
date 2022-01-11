@@ -6,16 +6,19 @@ from django.utils.translation import gettext_lazy as _
 from core.models import TimeStampedModel
 
         
-# Constraints:
-#   * baseline > 0
-#   * bonus >= 0
-#   * rows > 0
+class ProjectManager(models.Manager):
+    def reorder(self, project_id, direction):
+        project = self.get(pk=project_id)
+        order = list(project.user.get_project_order())
+        current_pos = order.index(project_id)
+        new_pos = current_pos
+        if current_pos > 0 and direction == 'up':
+            new_pos = current_pos - 1
+        elif current_pos < len(order) - 1 and direction == 'down':
+            new_pos = current_pos + 1
+        order[current_pos], order[new_pos] = order[new_pos], order[current_pos]
+        project.user.set_project_order(order)
 
-# Reorder projects by doing:
-#
-#  1. Get project order from user.get_project_order()
-#
-#  2. Reorder by doing user.set_project_order([<order1>, <order2>, <order3>, ...])
 
 class Project(TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -24,6 +27,8 @@ class Project(TimeStampedModel):
     bonus = models.PositiveIntegerField(default=0)
     rows = models.PositiveIntegerField(default=1)
     active = models.BooleanField(default=True)
+
+    objects = ProjectManager()
 
     class Meta:
         order_with_respect_to = 'user'

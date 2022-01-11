@@ -10,3 +10,11 @@ nav {
 .asteriskField {
   display: none;
 }
+
+.reorder-arrows {
+  width: 6em;
+}
+
+.reorder-arrows form {
+  display: inline-block;
+}
