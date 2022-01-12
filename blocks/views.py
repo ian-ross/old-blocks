@@ -13,7 +13,8 @@ class HomeView(LoginRequiredMixin, TemplateView):
 
 
 class ProjectListView(LoginRequiredMixin, ListView):
-    model = Project
+    def get_queryset(self):
+        return Project.objects.filter(user=self.request.user)
 
     
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
@@ -47,7 +48,3 @@ class ProjectReorderView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         Project.objects.reorder(kwargs['pk'], kwargs['dir'])
         return HttpResponseRedirect(reverse('blocks:project_list'))
-        
-    
-class SettingsView(LoginRequiredMixin, TemplateView):
-    template_name = 'blocks/settings.html'
