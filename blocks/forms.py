@@ -1,8 +1,8 @@
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit
+from crispy_forms.layout import Layout, Div, Field, Submit
 
-from .models import Project
+from .models import Project, TimeBlock
 
 
 class ProjectCreateForm(ModelForm):
@@ -49,4 +49,20 @@ class ProjectUpdateForm(ModelForm):
                 css_class='row'
             ),
             Submit('submit', 'Update project', css_class='mt-4')
-        )        
+        )
+
+
+class TimeBlockUpdateForm(ModelForm):
+    class Meta:
+        model = TimeBlock
+        fields = ['start', 'note']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Div('start', css_class='col-6'),
+            Div('note', css_class='col-6'),
+            Submit('submit', 'Update block', css_class='mt-4'),
+        )

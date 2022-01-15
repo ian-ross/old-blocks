@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Blocks | Block detail ({{ timeblock.project.name }}){% endblock title %}
+
+{% block content %}
+
+{% crispy form %}
+
+<form class="table-form" action="{% url 'blocks:block_delete' timeblock.pk %}" method="post"
+      onsubmit="return confirm('Are you sure you want to delete this block?')">
+  {% csrf_token %}
+  <button class="btn btn-danger mt-3">Delete</button>
+</form>
+
+{% endblock content %}

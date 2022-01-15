@@ -8,4 +8,10 @@
 
 {% crispy form %}
 
+<form class="table-form" action="{% url 'blocks:project_delete' project.pk %}" method="post"
+      onsubmit="return confirm('Are you sure you want to delete project &ldquo;{{ project.name }}&rdquo;? THIS WILL DELETE ALL BLOCK DATA ASSOCIATED WITH THE PROJECT!')">
+  {% csrf_token %}
+  <button class="btn btn-danger mt-3">Delete</button>
+</form>
+
 {% endblock content %}

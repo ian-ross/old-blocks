@@ -2,8 +2,36 @@
 
 {% block content %}
 
-<div class="bg-light p-5 rounded">
-  <p>Home page for: {{ user.username }}</p>
+<div class="d-flex flex-wrap">
+  {% for p in project_list %}
+  <div class="project">
+    <a class="project" href="{% url 'blocks:block_add' p.id %}">
+      <h3>{{ p.name }}</h3>
+    </a>
+
+    <div class="wrapper" style="grid-template-columns: repeat({{ p.columns }}, {{ block_size}}px); grid-template-rows: repeat({{ p.rows }}, {{ block_size }}px);">
+        
+      {% spaceless %}
+      {% for b in p.page_blocks %}
+      <div>
+        {% if b.day %}
+        <a href="{% url 'blocks:block_update' b.id %}">
+        {% else %}
+        <a href="{% url 'blocks:block_add_cell' p.id b.row b.column %}">
+        {% endif %}
+            <div class="{% if b.baseline %}baseline{% else %}bonus{% endif %} outer-block">
+            {% if b.day %}
+            <div class="{{ b.day }} block"></div>
+            {% endif %}
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+      {% endspaceless %}
+        
+    </div>
+  </div>
+  {% endfor %}
 </div>
 
 {% endblock content %}

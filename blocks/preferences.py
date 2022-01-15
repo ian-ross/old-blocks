@@ -1,4 +1,4 @@
-BLOCK_SIZE = 64
+BLOCK_SIZE = 48
 
 PROJECT_FONT = 'fs-5'
 

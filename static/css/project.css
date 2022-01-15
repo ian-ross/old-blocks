@@ -18,3 +18,45 @@ nav {
 .reorder-arrows form {
   display: inline-block;
 }
+
+.outer-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #888888;
+}
+
+.baseline { background-color: #E0E0E0; }
+.bonus { background-color: #FFFFFF; }
+  
+.block {
+  width: 40px;
+  height: 40px;
+  border-radius: 0.25rem;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+
+.day-1 { background-color: #FFA700; }
+.day-2 { background-color: #FF0000; }
+.day-3 { background-color: #008800; }
+.day-4 { background-color: #0000BB; }
+.day-5 { background-color: #FFFF00; }
+.day-6 { background-color: #BB00BB; }
+.day-7 { background-color: #00BBBB; }
+
+.wrapper {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+div.project {
+  margin: 20px;
+}
+
+a.project {
+  text-decoration: none;
+  color: #000000;
+}

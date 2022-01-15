@@ -1,11 +1,18 @@
+from collections import namedtuple
+from itertools import groupby
+
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from core.models import TimeStampedModel
+from .helpers import Week
 
-        
+
+TimeBlockView = namedtuple('TimeBlockView', ['pk', 'start', 'row', 'column'])
+
+
 class ProjectManager(models.Manager):
     def reorder(self, project_id, direction):
         project = self.get(pk=project_id)
@@ -19,6 +26,29 @@ class ProjectManager(models.Manager):
         order[current_pos], order[new_pos] = order[new_pos], order[current_pos]
         project.user.set_project_order(order)
 
+    def week_blocks(self, user, ts=None):
+        week = Week(ts)
+        qs = (Project.objects
+              .filter(active=True, user=user)
+              .filter(timeblock__start__gte=week.start(),
+                      timeblock__start__lt=week.end())
+              .values_list('name', 'timeblock__pk', 'timeblock__start',
+                           'timeblock__row', 'timeblock__column')
+              .order_by('_order', 'timeblock__row', 'timeblock__column'))
+        
+        info = {}
+        for k, g in groupby(qs, lambda t: t[0]):
+            info[k] = list(map(lambda t: TimeBlockView(pk=t[1], start=t[2], row=t[3], column=t[4]), g))
+
+        result = {}
+        for p in self.filter(active=True, user=user):
+            if p.name in info:
+                result[p.name] = info[p.name]
+            else:
+                result[p.name] = []
+        
+        return result
+        
 
 class Project(TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -43,7 +73,11 @@ class Project(TimeStampedModel):
         return reverse('blocks:project_update', kwargs={'pk': self.pk})
 
     
-class Block(models.Model):
+class TimeBlock(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     start = models.DateTimeField()
     duration = models.DurationField()
+    row = models.PositiveIntegerField()
+    column = models.PositiveIntegerField()
+    note = models.TextField(blank=True)
+    

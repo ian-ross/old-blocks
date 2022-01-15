@@ -3,6 +3,8 @@ from django.urls import path, register_converter
 from .views import HomeView
 from .views import ProjectListView, ProjectReorderView
 from .views import ProjectCreateView, ProjectUpdateView, ProjectDeleteView
+from .views import TimeBlockUpdateView, TimeBlockDeleteView
+from .views import TimerView
 
 from .converters import DirectionConverter
 
@@ -18,4 +20,8 @@ urlpatterns = [
     path('projects/<int:pk>/', ProjectUpdateView.as_view(), name='project_update'),
     path('projects/<int:pk>/delete/', ProjectDeleteView.as_view(), name='project_delete'),
     path('projects/<int:pk>/reorder/<dir:dir>/', ProjectReorderView.as_view(), name='project_reorder'),
+    path('blocks/<int:pk>/', TimeBlockUpdateView.as_view(), name='block_update'),
+    path('blocks/<int:pk>/delete/', TimeBlockDeleteView.as_view(), name='block_delete'),
+    path('blocks/add/<int:project_id>/<int:row>/<int:column>/', TimerView.as_view(), name='block_add_cell'),
+    path('blocks/add/<int:project_id>/', TimerView.as_view(), name='block_add'),
 ]
