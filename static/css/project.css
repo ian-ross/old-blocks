@@ -60,3 +60,10 @@ a.project {
   text-decoration: none;
   color: #000000;
 }
+
+.timer-countdown {
+  text-align: center;
+  font-family: 'Azeret Mono', monospace;
+  font-size: 15rem;
+  margin: 0 3rem;
+}

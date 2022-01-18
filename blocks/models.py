@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from core.models import TimeStampedModel
-from .helpers import Week
+from .helpers import Week, project_next_cell
 
 
 TimeBlockView = namedtuple('TimeBlockView', ['pk', 'start', 'row', 'column'])
@@ -48,6 +48,14 @@ class ProjectManager(models.Manager):
                 result[p.name] = []
         
         return result
+
+    def next_cell(self, project_id, ts=None):
+        project = self.get(pk=project_id)
+        week = Week(ts)
+        blocks = set(project.timeblock_set.filter(start__gte=week.start(),
+                                                  start__lt=week.end())
+                     .values_list('row', 'column').order_by('row', 'column'))
+        return project_next_cell(project, blocks)
         
 
 class Project(TimeStampedModel):

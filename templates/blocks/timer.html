@@ -2,6 +2,50 @@
 
 {% block content %}
 
-<h2>Timer view goes here</h2>
+{{ timer_data|json_script:"timer-data" }}
+
+{% csrf_token %}
+
+<div x-data="setupTimer()">
+  <div class="row">
+    <div class="col-8">
+      <div id="timer" class="timer-countdown">
+        <span type="text" x-text="minutes"></span>:<span type="text" x-text="seconds"></span>
+      </div>
+      <div class="container d-flex justify-content-around">
+        <button class="btn col-2 btn-lg"
+                x-bind:class="running ? 'btn-warning' : 'btn-success'"
+                x-text="label" @click="startStopTimer()">
+        </button>
+        <button class="btn col-2 btn-lg btn-danger" @click="cancelBlock">Cancel</button>
+        <button class="btn col-2 btn-lg btn-secondary" @click="resetTimer()">Reset</button>
+      </div>
+    </div>
+    <div class="col-4 bg-light p-5 rounded fs-3 mt-5">
+      Remember:
+
+      <ul>
+        <li><b>Choose</b> a task</li>
+        <li><b>Visualise</b> the result</li>
+        <li><b>Do the thing!</b></li>
+        <li><b>Record</b> your block</li>
+        <li><b>Rest</b> if you need it</li>
+        <li><b>Repeat</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6 mt-3" >
+      <div id="note_label" class="mb-3">
+        <label for="note" class="form-label">Note</label>
+        <textarea name="note" cols="40" rows="10" class="textarea form-control" id="note"></textarea>
+      </div>
+    </div>
+    <div class="ms-5 mt-5 col-4">
+      <button class="btn btn-lg btn-success" @click="addBlock">Add block immediately</button>
+    </div>
+  </div>
+</div>
 
 {% endblock content %}

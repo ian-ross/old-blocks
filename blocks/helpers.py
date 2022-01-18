@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 from django.utils import timezone
 
@@ -19,7 +19,7 @@ class Week:
 
 
 def project_grid_data(project, blocks):
-    # Use project nominal total number of blocks and rows to Calculate
+    # Use project nominal total number of blocks and rows to calculate
     # grid columns.
     total = project.baseline + project.bonus
     rows = project.rows
@@ -84,4 +84,35 @@ def project_grid_data(project, blocks):
         'page_blocks': page_blocks
     }
 
-    
+
+def project_next_cell(project, blocks):
+    # Use project nominal total number of blocks and rows to calculate
+    # grid columns.
+    total = project.baseline + project.bonus
+    rows = project.rows
+    columns = total // rows + (1 if total % rows != 0 else 0)
+
+    # Recalculate total and grid row count based on actual number of
+    # blocks if there are more blocks than the project's nominal
+    # total.
+    total = max(total, len(blocks))
+    rows = total // columns + (1 if total % columns != 0 else 0)
+
+    # Find day of week.
+    today = date.today().weekday()
+
+    if rows >= 5 and today <= rows:
+        # Try to find an empty cell in this today's row if we have
+        # something like daily rows.
+        for column in range(columns):
+            if (today, column) not in blocks:
+                return today, column
+
+    # Otherwise just find the first empty cell.
+    for row in range(rows):
+        for column in range(columns):
+            if (row, column) not in blocks:
+                return row, column
+
+    # And if that doesn't work, start a new row.
+    return rows, 0

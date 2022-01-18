@@ -66,3 +66,6 @@ class TimeBlockUpdateForm(ModelForm):
             Div('note', css_class='col-6'),
             Submit('submit', 'Update block', css_class='mt-4'),
         )
+
+
+        

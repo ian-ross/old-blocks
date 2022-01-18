@@ -1,13 +1,20 @@
-from django.http import HttpResponseRedirect
+from datetime import datetime, timedelta
+import json
+
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
+from django.views.decorators.http import require_POST
 from django.views.generic import View, DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
 from .models import Project, TimeBlock
 from .forms import ProjectCreateForm, ProjectUpdateForm, TimeBlockUpdateForm
 from .helpers import project_grid_data
-from .preferences import BLOCK_SIZE
+from .preferences import BLOCK_SIZE, BLOCK_DURATION
 
 
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -78,3 +85,35 @@ class TimeBlockDeleteView(LoginRequiredMixin, DeleteView):
 
 class TimerView(LoginRequiredMixin, TemplateView):
     template_name = 'blocks/timer.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        project_id = kwargs['project_id']
+        if 'row' in kwargs:
+            row = kwargs['row']
+            column = kwargs['column']
+        else:
+            row, column = Project.objects.next_cell(project_id)
+        
+        context['timer_data'] = {
+            'url': reverse('blocks:block_create'),
+            'project_id': project_id,
+            'row': row,
+            'column': column,
+            'duration': BLOCK_DURATION }
+        return context
+
+
+@require_POST
+@login_required
+def create_block(request):
+    body = json.loads(request.body)
+    project = get_object_or_404(Project, pk=body['project_id'])
+    start = datetime.strptime(body['start'][0:19], "%Y-%m-%dT%H:%M:%S")
+    TimeBlock.objects.create(project=project,
+                             start=timezone.make_aware(start),
+                             duration=timedelta(seconds=body['duration']),
+                             row=body['row'], column=body['column'],
+                             note=body['note'])
+    return JsonResponse({ 'ok': True })
