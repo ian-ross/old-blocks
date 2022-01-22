@@ -16,6 +16,7 @@ if READ_DOT_ENV_FILE:
 # GENERAL
 
 DEBUG = env.bool('DJANGO_DEBUG', False)
+DEBUG_TOOLBAR = False
 TIME_ZONE = 'UTC'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1

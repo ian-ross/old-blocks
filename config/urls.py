@@ -8,7 +8,7 @@ urlpatterns = [
     path('', include('blocks.urls', namespace='blocks')),
 ]
 
-if settings.DEBUG_TOOLBAR:
+if DEBUG_TOOLBAR:
     urlpatterns += [
         path('__debug__/', include('debug_toolbar.urls')),
     ]
