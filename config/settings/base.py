@@ -74,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'blocks.middleware.RedirectMiddleware',
 ]
 
 
@@ -133,6 +134,8 @@ EMAIL_TIMEOUT = 5
 
 # AUTHENTICATION
 
+AUTH_USER_MODEL = 'blocks.User'
+
 AUTHENTICATION_BACKENDS = [
     'magiclink.backends.MagicLinkBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -151,6 +154,11 @@ MAGICLINK_REQUIRE_SIGNUP = False
 MAGICLINK_EMAIL_TEMPLATE_NAME_TEXT = 'blocks/login_email.txt'
 MAGICLINK_EMAIL_TEMPLATE_NAME_HTML = 'blocks/login_email.html'
 
+BLOCKS_EMAIL_ALLOW_LIST = [
+    '@skybluetrades.net',
+    '@wania.net',
+    'ritawania@gmail.com'
+]
 
 # --------------------  MORE HERE?  --------------------
 

@@ -1,6 +1,6 @@
 from django.urls import path, register_converter
 
-from .views import HomeView
+from .views import HomeView, EmailNotAllowedView
 from .views import ProjectListView, ProjectReorderView
 from .views import ProjectCreateView, ProjectUpdateView, ProjectDeleteView
 from .views import TimeBlockUpdateView, TimeBlockDeleteView
@@ -14,6 +14,7 @@ register_converter(DirectionConverter, 'dir')
 app_name = 'blocks'
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
+    path('email_not_allowed', EmailNotAllowedView.as_view(), name='email_not_allowed'),
     
     path('projects/', ProjectListView.as_view(), name='project_list'),
     path('projects/add/', ProjectCreateView.as_view(), name='project_add'),

@@ -31,6 +31,10 @@
         
     </div>
   </div>
+  {% empty %}
+  <p>You don't have any projects set up yet! Go to the
+    <a href="{% url 'blocks:project_list' %}">project list</a> to
+    get started.</p>
   {% endfor %}
 </div>
 

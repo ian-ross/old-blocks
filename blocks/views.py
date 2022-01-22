@@ -28,7 +28,9 @@ class HomeView(LoginRequiredMixin, TemplateView):
         context['project_list'] = [project_grid_data(p, blocks[p.name]) for p in projects]
         return context
 
-
+class EmailNotAllowedView(TemplateView):
+    template_name='blocks/email_not_allowed.html'
+    
 class ProjectListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Project.objects.filter(user=self.request.user)

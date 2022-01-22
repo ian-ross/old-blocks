@@ -5,9 +5,23 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AbstractUser, UserManager
 
 from core.models import TimeStampedModel
 from .helpers import Week, project_next_cell
+from .middleware import redirect
+
+
+class EmailFilterUserManager(UserManager):
+    def create(self, **user_details):
+        email = user_details['email']
+        for check in settings.BLOCKS_EMAIL_ALLOW_LIST:
+            if email == check or (check[0] == '@' and email.endswith(check)):
+                return super().create(**user_details)
+        redirect('blocks:email_not_allowed')
+    
+class User(AbstractUser):
+    objects = EmailFilterUserManager()
 
 
 TimeBlockView = namedtuple('TimeBlockView', ['pk', 'start', 'row', 'column'])
