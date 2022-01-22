@@ -4,7 +4,7 @@ from .base import env
 
 # GENERAL
 
-DEBUG = False
+DEBUG = True
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 ALLOWED_HOSTS = ['blocks.skybluetrades.net']
 

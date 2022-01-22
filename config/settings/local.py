@@ -5,6 +5,7 @@ from .base import env
 # GENERAL
 
 DEBUG = True
+DEBUG_TOOLBAR = True
 SECRET_KEY = env(
     'DJANGO_SECRET_KEY',
     default='very-secret-for-development',
