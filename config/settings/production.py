@@ -30,8 +30,8 @@ SECURE_SSL_REDIRECT = True
 
 DEFAULT_FROM_EMAIL = 'blocks@skybluetrades.net'
 SERVER_EMAIL = 'blocks-admin@skybluetrades.net'
-ADMINS = ['ian@skybluetrades.net']
-MANAGERS = ['ian@skybluetrades.net']
+ADMINS = [('Ian', 'ian@skybluetrades.net')]
+MANAGERS = [('Ian', 'ian@skybluetrades.net')]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('MAILJET_SMTP_SERVER')
 EMAIL_PORT = env('MAILJET_SMTP_PORT')
