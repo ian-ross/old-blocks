@@ -2,16 +2,18 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}Blocks | {{ project.name }}{% endblock title %}
+{% block title %}Blocks | {% if project.pk %}{{ project.name }}{% else %}Add project{% endif %}{% endblock title %}
 
 {% block content %}
 
 {% crispy form %}
 
+{% if project.pk %}
 <form class="table-form" action="{% url 'blocks:project_delete' project.pk %}" method="post"
       onsubmit="return confirm('Are you sure you want to delete project &ldquo;{{ project.name }}&rdquo;? THIS WILL DELETE ALL BLOCK DATA ASSOCIATED WITH THE PROJECT!')">
   {% csrf_token %}
   <button class="btn btn-danger mt-3">Delete</button>
 </form>
+{% endif %}
 
 {% endblock content %}
