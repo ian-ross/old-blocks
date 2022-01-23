@@ -1,4 +1,3 @@
-
 var timer_data = {
   project_id: undefined,
   row: undefined,
@@ -34,7 +33,7 @@ function setupTimer() {
     minutes: formatMinutes(timer_data.duration),
     seconds: formatSeconds(timer_data.duration),
     start: undefined,
-    timer: undefined,
+    timer: new Worker('/static/js/timer.worker.js'),
     running: false,
     finished: false,
     label: 'Start',
@@ -43,11 +42,9 @@ function setupTimer() {
     resetTimer: function() {
       const self = this
       
-      if (self.timer) {
-        clearInterval(self.timer)
-        self.timer = undefined
-      }
+      self.timer.postMessage('stop')
       if (confirm('Are you sure you want to reset the timer?')) {
+        self.timer.postMessage(timer_data.duration)
         self.time = timer_data.duration
         self.minutes = formatMinutes(self.time)
         self.seconds = formatSeconds(self.time)
@@ -55,23 +52,18 @@ function setupTimer() {
         self.label = 'Start'
         self.running = false
       } else {
-        if (self.running)
-          self.timer = setInterval(() => { updateTime() }, 1000)
+        if (self.running) self.timer.postMessage('go')
       }
     },
     
     cancelBlock: function() {
       const self = this
-      
-      if (self.timer) {
-        clearInterval(self.timer)
-        self.timer = undefined
-      }
+
+      self.timer.postMessage('stop')
       if (confirm('Are you sure you want to cancel this block?')) {
         window.location.href = '/'
       } else {
-        if (self.running)
-          self.timer = setInterval(() => { updateTime() }, 1000)
+        if (self.running) self.timer.postMessage('go')
       }
     },
 
@@ -118,9 +110,8 @@ function setupTimer() {
     
     blockFinished: function() {
       const self = this
-      
-      clearInterval(self.timer)
-      self.timer = undefined
+
+      self.timer.postMessage('stop')
       self.running = false
       self.sound.play()
       alert('Timer finished! Saving...')
@@ -128,11 +119,12 @@ function setupTimer() {
       self.sound.load()
       self.saveBlock()
     },
-    
+
     startStopTimer: function() {
       const self = this
       
-      function updateTime() {
+      self.timer.onmessage = function(msg) {
+        self.time = msg.data
         if (self.time == 0) self.blockFinished()
         if (self.time > 0) self.time -= 1
         self.minutes = formatMinutes(self.time)
@@ -141,13 +133,13 @@ function setupTimer() {
 
       self.running = !self.running
       if (self.running) {
-        self.timer = setInterval(() => { updateTime() }, 1000)
         if (self.start === undefined) {
           self.start = new Date()
+          self.timer.postMessage(timer_data.duration)
         }
+        self.timer.postMessage('go')
       } else {
-        clearInterval(self.timer)
-        self.timer = undefined
+        self.timer.postMessage('stop')
       }
 
       self.label = self.running ? 'Pause' : 'Resume'

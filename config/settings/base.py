@@ -166,6 +166,11 @@ BLOCKS_EMAIL_ALLOW_LIST = [
     'ritawania@gmail.com'
 ]
 
+
+# SESSIONS
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
 # --------------------  MORE HERE?  --------------------
 
 # Password validation
