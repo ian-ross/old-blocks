@@ -124,10 +124,12 @@ function setupTimer() {
       
       self.timer.onmessage = function(msg) {
         self.time = msg.data
-        if (self.time > 0) self.time -= 1
-        self.minutes = formatMinutes(self.time)
-        self.seconds = formatSeconds(self.time)
-        if (self.time == 0) self.blockFinished()
+        if (self.time == 'DONE')
+          self.blockFinished()
+        else {
+          self.minutes = formatMinutes(self.time)
+          self.seconds = formatSeconds(self.time)
+        }
       }
 
       self.running = !self.running

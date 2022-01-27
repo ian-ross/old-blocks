@@ -23,10 +23,9 @@ self.onmessage = function(msg) {
 }
 
 function updateTime() {
-  time -= 1;
-  if (time < 0) time = 0;
+  time = time > 0 ? time - 1 : 'DONE'
   self.postMessage(time);
-  if (time == 0) {
+  if (time < 0) {
     if (timerID !== undefined) {
       clearInterval(timerID)
       timerID = undefined
