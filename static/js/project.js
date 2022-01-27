@@ -37,7 +37,7 @@ function setupTimer() {
     running: false,
     finished: false,
     label: 'Start',
-    sound: new Howl({src: ['/static/sounds/alarm.wav']}),
+    sound: new Howl({src: ['/static/sounds/alarm.wav'], html5: true}),
 
     resetTimer: function() {
       const self = this
