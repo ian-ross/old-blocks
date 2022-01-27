@@ -8,11 +8,11 @@
 
 <div x-data="setupTimer()">
   <div class="row">
-    <div class="col-8">
+    <div class="col-lg-8">
       <div id="timer" class="timer-countdown">
         <span type="text" x-text="minutes"></span>:<span type="text" x-text="seconds"></span>
       </div>
-      <div class="container d-flex justify-content-around">
+      <div class="d-flex justify-content-around">
         <button class="btn col-2 btn-lg"
                 x-bind:class="running ? 'btn-warning' : 'btn-success'"
                 x-text="label" @click="startStopTimer()">
@@ -21,7 +21,7 @@
         <button class="btn col-2 btn-lg btn-secondary" @click="resetTimer()">Reset</button>
       </div>
     </div>
-    <div class="col-4 bg-light p-5 rounded fs-3 mt-5">
+    <div class="col-4 bg-light p-5 rounded fs-3 mt-5 d-none d-lg-block">
       Remember:
 
       <ul>
@@ -35,8 +35,8 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-6 mt-3" >
+  <div class="d-flex">
+    <div class="col-6 mt-3 ms-5" >
       <div id="note_label" class="mb-3">
         <label for="note" class="form-label">Note</label>
         <textarea name="note" cols="40" rows="10" class="textarea form-control" id="note"></textarea>

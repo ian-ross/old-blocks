@@ -25,7 +25,9 @@ CACHES = {
 
 # EMAIL
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = ROOT_DIR / 'dev-email'
+os.makedirs(EMAIL_FILE_PATH, exist_ok=True)
 
 
 # DEBUG TOOLBAR

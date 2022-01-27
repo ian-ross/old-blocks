@@ -64,6 +64,12 @@ a.project {
 .timer-countdown {
   text-align: center;
   font-family: 'Azeret Mono', monospace;
-  font-size: 15rem;
+  font-size: 12rem;
   margin: 0 3rem;
+}
+
+@media (min-width: 992px){
+  .timer-countdown {
+    font-size: 15rem;
+  }
 }
