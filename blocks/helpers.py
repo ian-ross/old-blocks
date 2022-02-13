@@ -19,21 +19,17 @@ class Week:
 
 
 def project_grid_data(project, blocks):
-    print(f'===> project_grid_data: {project.name}')
-    
     # Use project nominal total number of blocks and rows to calculate
     # grid columns.
     total = project.baseline + project.bonus
     rows = project.rows
     columns = total // rows + (1 if total % rows != 0 else 0)
-    print(f'===> 1: total={total}  rows={rows}  columns={columns}')
     
     # Recalculate total and grid row count based on actual number of
     # blocks if there are more blocks than the project's nominal
     # total.
     total = max(total, len(blocks))
     rows = total // columns + (1 if total % columns != 0 else 0)
-    print(f'===> 2: total={total}  rows={rows}  columns={columns}')
 
     # Partition blocks into those inside and outside current grid
     # bounds (to deal with case where grid has been reduced in size).
@@ -43,13 +39,11 @@ def project_grid_data(project, blocks):
             inside.append(b)
         else:
             outside.append(b)
-    print(f'===> len(inside)={len(inside)}  len(outside)={len(outside)}')
     
     # Put the inside blocks into their cells.
     cells = {}
     for b in inside:
         cells[(b.row, b.column)] = b
-    print(f'===> inside cells = {cells.keys()}')
 
     # Fit the outside blocks into empty cells in row, column order.
     outside.reverse()
@@ -60,7 +54,6 @@ def project_grid_data(project, blocks):
             if (r, c) in cells:
                 continue
             cells[(r, c)] = outside.pop()
-    print(f'===> all cells = {cells.keys()}')
 
     # Blocks in row-major order.
     page_blocks = []
