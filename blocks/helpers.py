@@ -63,11 +63,8 @@ def project_grid_data(project, blocks):
                 break
             
             # Baseline cells to left.
-            page_block = {
-                'row': r,
-                'column': c,
-                'baseline': r * columns + c < project.baseline
-            }
+            baseline = r < project.rows and project.rows * c + r < project.baseline
+            page_block = { 'row': r, 'column': c, 'baseline': baseline }
 
             # Day for block colour.
             if (r, c) in cells:
